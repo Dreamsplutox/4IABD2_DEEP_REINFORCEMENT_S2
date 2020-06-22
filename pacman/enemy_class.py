@@ -1,6 +1,6 @@
 import pygame
 import random
-from settings import * 
+from pacman.settings import *
 vec = pygame.math.Vector2
 
 

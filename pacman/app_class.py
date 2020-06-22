@@ -1,9 +1,9 @@
 import pygame
 import sys
 import copy
-from settings import *
-from player_class import *
-from enemy_class import *
+from pacman.settings import *
+from pacman.player_class import *
+from pacman.enemy_class import *
 
 
 pygame.init()

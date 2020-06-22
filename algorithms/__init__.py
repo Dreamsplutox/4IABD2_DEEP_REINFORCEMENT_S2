@@ -49,6 +49,7 @@ def policy_iteration(
 ) -> (np.ndarray, np.ndarray):
     Pi = tabular_uniform_random_policy(S.shape[0], A.shape[0])
     V = np.random.random((S.shape[0],))
+    print("shape pi : " , np.shape(Pi))
     V[T] = 0.0
     while True:
         V = iterative_policy_evaluation(S, A, P, T, Pi, gamma, theta, V)
@@ -413,3 +414,47 @@ def tabular_q_learning_control(
         pi[s, np.argmax(q[s, :])] = 1.0
 
     return q, pi
+
+
+def tabular_expected_sarsa_control(
+        states_count: int,
+        actions_count: int,
+        reset_func: Callable,
+        is_terminal_func: Callable,
+        step_func: Callable,
+        episodes_count: int = 50000,
+        max_steps_per_episode: int = 10,
+        epsilon: float = 0.2,
+        alpha: float = 0.1,
+        gamma: float = 0.99,
+) -> (np.ndarray, np.ndarray):
+    states = np.arange(states_count)
+    actions = np.arange(actions_count)
+    b = tabular_uniform_random_policy(states_count, actions_count)
+    q = np.random.random((states_count, actions_count))
+    for s in states:
+        if is_terminal_func(s):
+            q[s, :] = 0.0
+
+    for episode_id in range(episodes_count):
+        s = reset_func()
+        step = 0
+        while not is_terminal_func(s) and step < max_steps_per_episode:
+            rdm = np.random.random()
+            A = np.random.choice(actions) if rdm < epsilon else np.argmax(q[s, :])
+            (s_p, r, t) = step_func(s, A)
+            sum = 0
+            for a in actions:
+                sum += q[s_p, a]
+            sum = sum / len(actions)
+            q[s, A] += alpha * (r + gamma * sum) - q[s, A]
+
+            s = s_p
+            step += 1
+
+        pi = np.zeros_like(q)
+        for s in states:
+            pi[s, :] = 0.0
+            pi[s, np.argmax(q[s, :])] = 1.0
+
+        return q, pi

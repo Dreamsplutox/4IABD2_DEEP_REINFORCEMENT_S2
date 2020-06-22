@@ -1,5 +1,5 @@
 import pygame
-from settings import * 
+from pacman.settings import *
 vec = pygame.math.Vector2
 
 class Player:
