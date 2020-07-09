@@ -164,29 +164,32 @@ def monte_carlo_with_exploring_starts_control(
         actions_count: int,
         is_terminal_func: Callable,
         step_func: Callable,
-        episodes_count: int = 10000,
+        episodes_count: int = 10000, # équivalent des epochs
         max_steps_per_episode: int = 10,
         gamma: float = 0.99,
 ) -> (np.ndarray, np.ndarray):
-    states = np.arange(states_count)
-    actions = np.arange(actions_count)
-    pi = tabular_uniform_random_policy(states_count, actions_count)
-    q = np.random.random((states_count, actions_count))
-    for s in states:
+    states = np.arange(states_count) #états possibles
+    actions = np.arange(actions_count) #actions possibles
+    pi = tabular_uniform_random_policy(states_count, actions_count) # policy random uniform
+    q = np.random.random((states_count, actions_count)) # valeurs aléatoires
+
+    for s in states: # met les états terminaux à 0.0 pour la policy et q
         if is_terminal_func(s):
             q[s, :] = 0.0
             pi[s, :] = 0.0
 
     returns = np.zeros((states_count, actions_count))
     returns_count = np.zeros((states_count, actions_count))
-    for episode_id in range(episodes_count):
-        s0 = np.random.choice(states)
 
-        if is_terminal_func(s0):
+    for episode_id in range(episodes_count):
+        s0 = np.random.choice(states) # état initial aléatoire
+
+        if is_terminal_func(s0): # si état initial => terminal ==> fin
             continue
 
         a0 = np.random.choice(actions)
         s1, r1, t1 = step_func(s0, a0)
+
 
         s_list, a_list, _, r_list = step_until_the_end_of_the_episode_and_return_history(s1, pi, is_terminal_func,
                                                                                          step_func,
@@ -194,6 +197,9 @@ def monte_carlo_with_exploring_starts_control(
         s_list = [s0] + s_list
         a_list = [a0] + a_list
         r_list = [r1] + r_list
+        print(s_list,len(s_list))
+        print(a_list,len(a_list))
+        print(r_list,len(r_list))
 
         G = 0
         for t in reversed(range(len(s_list))):
@@ -430,7 +436,6 @@ def tabular_expected_sarsa_control(
 ) -> (np.ndarray, np.ndarray):
     states = np.arange(states_count)
     actions = np.arange(actions_count)
-    b = tabular_uniform_random_policy(states_count, actions_count)
     q = np.random.random((states_count, actions_count))
     for s in states:
         if is_terminal_func(s):

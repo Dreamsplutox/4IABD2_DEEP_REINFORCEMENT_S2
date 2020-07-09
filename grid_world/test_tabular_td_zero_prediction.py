@@ -10,3 +10,4 @@ if __name__ == "__main__":
     V = tabular_td_zero_prediction(Pi, is_terminal, reset, step, max_steps_per_episode=10, episodes_count=10000)
     print("--- %s seconds ---" % (time.time() - start_time))
     print(V)
+    print(Pi)

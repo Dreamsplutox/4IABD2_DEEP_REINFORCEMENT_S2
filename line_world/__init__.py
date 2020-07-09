@@ -2,13 +2,14 @@ from typing import Callable
 
 import numpy as np
 
-num_states = 7
+num_states = 10
 S = np.arange(num_states)
 A = np.array([0, 1])  # 0: left, 1 : right
 T = np.array([0, num_states - 1])
 P = np.zeros((len(S), len(A), len(S), 2))
 
 print("shape P : ", np.shape(P))
+
 
 for s in S[1:-1]:
     P[s, 0, s - 1, 0] = 1.0

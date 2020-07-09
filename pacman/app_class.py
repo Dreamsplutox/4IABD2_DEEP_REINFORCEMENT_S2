@@ -102,10 +102,6 @@ class App:
 		for x in range(HEIGHT//self.cell_height):
 			pygame.draw.line(self.background, GREY, (0, x*self.cell_height), (WIDTH, x*self.cell_height))
 
-		#for coin in self.coins:
-		#	pygame.draw.rect(self.background,(167,179,34), 
-		#					(coin.x * self.cell_width, coin.y * self.cell_height, self.cell_width, self.cell_height))
-
 
 	def reset(self):
 		self.player.lives = 3

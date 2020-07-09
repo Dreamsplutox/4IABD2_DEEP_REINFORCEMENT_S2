@@ -8,3 +8,4 @@ if __name__ == "__main__":
     Pi = tabular_uniform_random_policy(S.shape[0], A.shape[0])
     V = iterative_policy_evaluation(S, A, P, T, Pi)
     print(V)
+    print(Pi)
