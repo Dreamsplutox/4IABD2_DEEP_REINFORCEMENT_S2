@@ -1,5 +1,5 @@
 from tictactoe.tictactoe_env import *
-from tictactoe.tictactoe_play import *
+from tictactoe.tictactoe_demo_iavrandom import *
 from typing import Callable
 
 import numpy as np
@@ -39,10 +39,6 @@ def monte_carlo_with_exploring_starts_control(
 
         s_list, a_list, r_list = play_a_game(s0, board, pi, max_steps_per_episode)
 
-        print(s_list, len(s_list))
-        print(a_list, len(a_list))
-        print(r_list, len(r_list))
-
 
         G = 0
         for t in reversed(range(len(s_list))):
@@ -64,9 +60,4 @@ if __name__ == "__main__":
     Q, Pi = monte_carlo_with_exploring_starts_control(len(S), len(A), is_terminal, choose_action,
                                                       episodes_count=10000, max_steps_per_episode=9)
 
-    print('--------------------------------------')
-    print(Q)
-    print(Pi)
-
-
-    #pygame_grid_line_world.display_results("grid",Q,Pi,S,T,P,(width,height))
+    display_results(Q,Pi)

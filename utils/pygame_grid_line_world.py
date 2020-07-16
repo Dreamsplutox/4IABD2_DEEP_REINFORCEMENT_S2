@@ -2,7 +2,6 @@ import pygame, sys
 import numpy as np
 
 pygame.init()
-vec = pygame.math.Vector2
 FPS = 60
 actions_grid = [[-1,0], [1,0],[0,-1],[0,1]]
 actions_line = [[-1,0], [1,0]]
@@ -29,6 +28,7 @@ class App():
         self.count_move = self.player_begin_pos[0] + self.player_begin_pos[1] * self.size_grid[1]
         self.count_before_move = 0
         self.actions = actions
+
     def draw_text(self, content, screen, pos, size, colour, font_name, centered=False):
         font = pygame.font.SysFont(font_name, size)
         text = font.render(content, False, colour)

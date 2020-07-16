@@ -101,7 +101,7 @@ def play_a_game(s0, board, pi, max_steps_per_episode): #lance une partie
     s_list.append(s0)
     symbol = 1
     isEnd = False
-    showBoard(board)
+    #showBoard(board)
 
     while not isEnd:
         # Player 1 ==> IA
@@ -113,7 +113,7 @@ def play_a_game(s0, board, pi, max_steps_per_episode): #lance une partie
         s_list.append(action)
         symbol = -1
         # check board status if it is end
-        showBoard(board)
+        #showBoard(board)
         win,isEnd = is_terminal(board)
         if win is not None:
             rewards = set_reward(win,board)
@@ -125,7 +125,7 @@ def play_a_game(s0, board, pi, max_steps_per_episode): #lance une partie
             action = np.random.choice(len(positions))
             board[action] = symbol
             symbol = 1
-            showBoard(board)
+            #showBoard(board)
             win,isEnd = is_terminal(board)
             if win is not None:
                 rewards = set_reward(win,board)

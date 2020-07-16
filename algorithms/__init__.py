@@ -447,8 +447,6 @@ def tabular_expected_sarsa_control(
             a = np.random.choice(actions) if rdm < epsilon else np.argmax(q[s, :])
             (s_p, r, t) = step_func(s, a)
 
-
-
             q[s, a] += alpha * ( r + gamma * np.mean(q[s_p, :]) - q[s, a] )
 
             s = s_p
