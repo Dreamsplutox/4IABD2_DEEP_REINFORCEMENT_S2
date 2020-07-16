@@ -440,23 +440,24 @@ def tabular_expected_sarsa_control(
 
     for episode_id in range(episodes_count):
         s = reset_func()
+        print(s)
         step = 0
         while not is_terminal_func(s) and step < max_steps_per_episode:
             rdm = np.random.random()
-            A = np.random.choice(actions) if rdm < epsilon else np.argmax(q[s, :])
-            (s_p, r, t) = step_func(s, A)
-            sum = 0
-            for a in actions:
-                sum += q[s_p, a]
-            sum = sum / len(actions)
-            q[s, A] += alpha * (r + gamma * sum) - q[s, A]
+            a = np.random.choice(actions) if rdm < epsilon else np.argmax(q[s, :])
+            (s_p, r, t) = step_func(s, a)
+
+
+
+            q[s, a] += alpha * ( r + gamma * np.mean(q[s_p, :]) - q[s, a] )
 
             s = s_p
             step += 1
 
-        pi = np.zeros_like(q)
-        for s in states:
-            pi[s, :] = 0.0
-            pi[s, np.argmax(q[s, :])] = 1.0
 
-        return q, pi
+    pi = np.zeros_like(q)
+    for s in states:
+        pi[s, :] = 0.0
+        pi[s, np.argmax(q[s, :])] = 1.0
+
+    return q, pi
