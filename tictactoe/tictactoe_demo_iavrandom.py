@@ -174,7 +174,6 @@ class App():
 def display_results(Q,Pi):
     print(Q)
     print(Pi)
-    print("-----------------------------")
 
     app = App(Q,Pi)
     app.run()

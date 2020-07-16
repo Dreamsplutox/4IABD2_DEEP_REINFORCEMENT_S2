@@ -235,6 +235,7 @@ def on_policy_first_visit_monte_carlo_control(
 
     returns = np.zeros((states_count, actions_count))
     returns_count = np.zeros((states_count, actions_count))
+
     for episode_id in range(episodes_count):
         s0 = reset_func()
 
