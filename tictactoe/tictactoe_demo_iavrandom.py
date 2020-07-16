@@ -60,7 +60,7 @@ class App():
             self.random_wins += 1
         else:
             self.tie += 1
-
+        self.actual = 0
         self.winner = None
 
     def draw_lines(self):
@@ -103,15 +103,10 @@ class App():
 
     def choose_IA(self)->(int,int): ########### PB ICI ############
         available = [i[1] + i[0] * 3 for i in self.availablePositions()]
-        print("available moves : ", available)
         if self.last_move != None:
-            move = np.argmax([i for idx,i in enumerate(self.Q[self.last_move]) if idx in available])
+            move = np.where(self.Q[self.last_move] == np.max([i for idx,i in enumerate(self.Q[self.last_move]) if idx in available]))[0][0]
         else:
-            move = np.argmax([i for idx,i in enumerate(self.Q[0]) if idx in available])
-
-        print("Q : ", self.Q[0])
-        print("move : ", move)
-
+            move = np.where(self.Q[0] == np.max([i for idx,i in enumerate(self.Q[0]) if idx in available]))[0][0]
 
         return (move//3,move - 3*(move//3))
 
@@ -140,27 +135,37 @@ class App():
         self.screen.fill(backgroundColor)
         self.draw_board()
         self.draw_lines()
+        self.draw_score()
         pygame.display.update()
+
+
+    def draw_text(self, content, screen, pos, size, colour, font_name, centered=False):
+        font = pygame.font.SysFont(font_name, size)
+        text = font.render(content, False, colour)
+        text_size = text.get_size()
+        if centered:
+            pos[0] = pos[0] - text_size[0] // 2
+            pos[1] = pos[1] - text_size[1] // 2
+        screen.blit(text, pos)
+
+    def draw_score(self):
+        self.draw_text('IA WINS : {}'.format(self.IA_wins), self.screen, [75,500], 30, (255,255,255), 'arial black')
+        self.draw_text('RANDOM WINS : {}'.format(self.random_wins), self.screen, [75, 550], 30, (255, 255, 255), 'arial black')
+        self.draw_text('TIE : {}'.format(self.tie), self.screen, [75, 600], 30, (255, 255, 255), 'arial black')
 
     def play(self):
         move = [None, None]
         self.count_before_move += 1
         if self.count_before_move == int(FPS):
-            print(self.board)
-            print(self.availablePositions())
-
             self.count_before_move = 0
             if self.actual == 0 and self.winner == None:
                 move[0],move[1] = self.choose_IA()
                 self.board[move[0]][move[1]] = xMark
-                print(xMark, move)
                 self.actual = 1
             elif self.actual == 1 and self.winner == None:
                 move[0],move[1] = self.choose_random()
                 self.board[move[0]][move[1]] = oMark
                 self.actual = 0
-                print(oMark,move)
-            print("------------------------------------")
             self.winner = self.get_winner()
             if self.winner != None:
 

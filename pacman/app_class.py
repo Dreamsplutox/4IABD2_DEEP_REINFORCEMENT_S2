@@ -190,7 +190,7 @@ class App:
 		self.player.draw()
 		for enemy in self.enemies:
 			enemy.draw()
-		pygame.display. update()
+		pygame.display.update()
 
 
 	def remove_life(self):
