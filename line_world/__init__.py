@@ -8,9 +8,6 @@ A = np.array([0, 1])  # 0: left, 1 : right
 T = np.array([0, num_states - 1])
 P = np.zeros((len(S), len(A), len(S), 2))
 
-print("shape P : ", np.shape(P))
-
-
 for s in S[1:-1]:
     P[s, 0, s - 1, 0] = 1.0
     P[s, 1, s + 1, 0] = 1.0

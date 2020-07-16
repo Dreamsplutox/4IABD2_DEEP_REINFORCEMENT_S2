@@ -197,9 +197,6 @@ def monte_carlo_with_exploring_starts_control(
         s_list = [s0] + s_list
         a_list = [a0] + a_list
         r_list = [r1] + r_list
-        print(s_list,len(s_list))
-        print(a_list,len(a_list))
-        print(r_list,len(r_list))
 
         G = 0
         for t in reversed(range(len(s_list))):

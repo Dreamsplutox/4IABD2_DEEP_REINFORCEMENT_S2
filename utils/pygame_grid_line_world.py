@@ -26,10 +26,9 @@ class App():
         self.size_grid = size
         self.player_pos = pos.copy()
         self.player_begin_pos = pos.copy()
-        self.count_move = 0
+        self.count_move = self.player_begin_pos[0] + self.player_begin_pos[1] * self.size_grid[1]
         self.count_before_move = 0
         self.actions = actions
-
     def draw_text(self, content, screen, pos, size, colour, font_name, centered=False):
         font = pygame.font.SysFont(font_name, size)
         text = font.render(content, False, colour)
@@ -124,12 +123,13 @@ class App():
                                                         101 + int(self.cell_size / 2) + self.player_pos[1] * self.cell_size), int(3 * self.cell_size / 8))
 
     def move_player(self):
+
         self.count_before_move += 1
-        if self.count_before_move == int(FPS/3):
+        if self.count_before_move == int(FPS):
             self.count_before_move = 0
             if self.count_move in self.end_cells:
                 self.player_pos = self.player_begin_pos.copy()
-                self.count_move = 0
+                self.count_move = self.player_begin_pos[0] + self.player_begin_pos[1] * self.size_grid[1]
             else:
                 if (self.type == 'grid'):
                     self.player_pos[0] += actions_grid[self.actions[self.count_move]][0]
@@ -151,7 +151,10 @@ def display_results(type,Q,Pi,S,T,P,size):
     cell_size = 64
     width = 50 + size[0] * cell_size + 50 #marge gauche + cases longueur grille * taille case + marge droite
     height = 100 + size[1] * cell_size + 100 #marge gauche + cases hauteur grille * taille case + marge droite ==> line world
-    begin_pos = [0,0]
+    if type == 'line':
+        begin_pos = [1,0]
+    else :
+        begin_pos = [0, 0]
     #print(Q)
     #print(Pi)
     #print(S)
